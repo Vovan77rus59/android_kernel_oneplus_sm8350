@@ -419,7 +419,7 @@ int adm_get_all_mute_pp_param_from_port(int port_id)
 
 	for (idx = 0; idx < MAX_COPPS_PER_PORT; idx++) {
 		if (atomic_read(&this_adm.copp.id[port_idx][idx]) != RESET_COPP_ID) {
-			pr_info("%s : active copp_idx:0x%x for port_id \n",__func__, idx);
+			pr_info("%s : active copp_idx:0x%d for port_id \n",__func__, idx);
 
 			if (atomic_read(&this_adm.copp.session_type[port_idx][idx]) == SESSION_TYPE_TX) {
 				param_hdr.instance_id = 0x8000;
@@ -433,7 +433,7 @@ int adm_get_all_mute_pp_param_from_port(int port_id)
 						ADM_CLIENT_ID_DEFAULT, NULL, &param_hdr,
 						param_value);
 			pr_info("%s : mute_detect return param, ret: %d, mutedet = %d, zd = %d, pop = %d, clip = %d\n",__func__, ret, *(uint32_t *)param_value, *((uint32_t *)param_value + 1), *((uint32_t *)param_value + 2), *((uint32_t *)param_value + 3));
-			pr_info("%s : COPP: 0x%x\n",__func__, this_adm.copp.app_type[port_idx][idx]);
+			pr_info("%s : COPP: 0x%td\n",__func__, this_adm.copp.app_type[port_idx][idx]);
 			switch (atomic_read(&this_adm.copp.app_type[port_idx][idx])) {
 				case 0x11130:
 					pr_info("%s : update playback detection result\n",__func__);
@@ -2735,7 +2735,7 @@ static void send_adm_cal_type(int fedai_id, int cal_index, int path, int port_id
 				      cal_block->map_data.map_size,
 				      source_vm, 1, dest_vm, dest_perms, 2);
 		if (ret < 0) {
-			pr_err("%s: hyp_assign_phys failed result = %d addr = 0x%pK size = %d\n",
+			pr_err("%s: hyp_assign_phys failed result = %d addr = 0x%llxK size = %lu\n",
 				__func__, ret, cal_block->cal_data.paddr,
 				cal_block->map_data.map_size);
 			ret = -EINVAL;
@@ -4137,6 +4137,7 @@ static void route_set_opcode_matrix_id(
 			break;
 		}
 		/* fall through to set matrix id for non-listen case */
+                /* fallthrough */
 	case ADM_PATH_NONLIVE_REC:
 		route->hdr.opcode = ADM_CMD_MATRIX_MAP_ROUTINGS_V5;
 		route->matrix_id = ADM_MATRIX_ID_AUDIO_TX;
@@ -4585,7 +4586,7 @@ int adm_close(int port_id, int perf_mode, int copp_idx)
 							source_vm, 2, dest_vm,
 							dest_perms, 1);
 						if (ret < 0) {
-							pr_err("%s: hyp_assign_phys failed result = %d addr = 0x%pK size = %d\n",
+							pr_err("%s: hyp_assign_phys failed result = %d addr = 0x%llxK size = %lu\n",
 								__func__, ret,
 								cal_block->cal_data.paddr,
 								cal_block->map_data.map_size);
@@ -4651,7 +4652,7 @@ int adm_close(int port_id, int perf_mode, int copp_idx)
 						source_vm, 2, dest_vm,
 						dest_perms, 1);
 				if (ret < 0) {
-					pr_err("%s: hyp_assign_phys failed result = %d addr = 0x%pK size = %d\n",
+					pr_err("%s: hyp_assign_phys failed result = %d addr = 0x%llxK size = %lu\n",
 						__func__, ret, cal_block->cal_data.paddr,
 						cal_block->map_data.map_size);
 					ret = -EINVAL;

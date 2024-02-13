@@ -346,7 +346,7 @@ static ssize_t codec_debug_read(struct file *file, char __user *ubuf,
 static ssize_t codec_debug_peek_write(struct file *file,
 	const char __user *ubuf, size_t cnt, loff_t *ppos)
 {
-	char lbuf[SWR_SLV_WR_BUF_LEN];
+	char lbuf[SWR_SLV_WR_BUF_LEN] = {};
 	int rc = 0;
 	u32 param[5];
 	struct swr_device *pdev = NULL;
@@ -389,7 +389,7 @@ static ssize_t codec_debug_peek_write(struct file *file,
 static ssize_t codec_debug_write(struct file *file,
 	const char __user *ubuf, size_t cnt, loff_t *ppos)
 {
-	char lbuf[SWR_SLV_WR_BUF_LEN];
+	char lbuf[SWR_SLV_WR_BUF_LEN] = {};
 	int rc = 0;
 	u32 param[5];
 	struct swr_device *pdev;
@@ -1672,7 +1672,7 @@ static int wsa883x_swr_probe(struct swr_device *pdev)
 	ret = swr_get_logical_dev_num(pdev, pdev->addr, &devnum);
 	if (ret) {
 		dev_dbg(&pdev->dev,
-			"%s get devnum %d for dev addr %lx failed\n",
+			"%s get devnum %d for dev addr %llx failed\n",
 			__func__, devnum, pdev->addr);
 		ret = -EPROBE_DEFER;
 		goto err;

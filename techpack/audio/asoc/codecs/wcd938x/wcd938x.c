@@ -1360,6 +1360,7 @@ static int wcd938x_codec_enable_dmic(struct snd_soc_dapm_widget *w,
 		break;
 	case 2:
 		dmic2_left_en = WCD938X_DIGITAL_CDC_DMIC2_CTL;
+		/* fallthrough */
 	case 3:
 		dmic_clk_cnt = &(wcd938x->dmic_2_3_clk_cnt);
 		dmic_clk_reg = WCD938X_DIGITAL_CDC_DMIC_RATE_1_2;
@@ -2894,7 +2895,7 @@ static int wcd938x_tx_master_ch_put(struct snd_kcontrol *kcontrol,
 		return -EINVAL;
 
 	dev_dbg(component->dev, "%s: slave_ch_idx: %d", __func__, slave_ch_idx);
-	dev_dbg(component->dev, "%s: ucontrol->value.enumerated.item[0] = %ld\n",
+	dev_dbg(component->dev, "%s: ucontrol->value.enumerated.item[0] = %d\n",
 			__func__, ucontrol->value.enumerated.item[0]);
 
 	idx = ucontrol->value.enumerated.item[0];
